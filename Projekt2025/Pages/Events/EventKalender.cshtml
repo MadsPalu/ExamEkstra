@@ -1,0 +1,55 @@
+@page
+@model Projekt2025.Pages.EventKalenderModel
+@{
+    ViewData["Title"] = "Eventkalender";
+
+    var grupperet = Model.KommendeEvents
+        .GroupBy(e => e.EventDateTimeStart.Date)
+        .ToDictionary(g => g.Key, g => g.ToList());
+}
+
+<h1>Eventkalender</h1>
+
+<table style="border-collapse: collapse; border: 1px solid #ccc;">
+    <thead>
+        <tr>
+            @for (int i = 0; i < 7; i++)
+            {
+                var dag = Model.StartDato.AddDays(i);
+                <th style="padding: 10px; border: 1px solid #ccc; background-color: #eee; text-align: center;">
+                    @dag.ToString("dddd", new System.Globalization.CultureInfo("da-DK"))
+                </th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @for (int uge = 0; uge < 4; uge++)
+        {
+            <tr>
+                @for (int i = 0; i < 7; i++)
+                {
+                    var dato = Model.StartDato.AddDays(uge * 7 + i);
+                    <td style="vertical-align: top; border: 1px solid #ccc; padding: 10px; width: 14%;">
+                        <div><strong>@dato.ToString("dd-MM")</strong></div>
+
+                        @if (grupperet.ContainsKey(dato))
+                        {
+                            foreach (var e in grupperet[dato])
+                            {
+                                <div style="margin-top: 8px; background-color: #d6ecf3; padding: 5px; border-radius: 6px;">
+                                    <strong>@e.Title</strong><br />
+                                    <small>@e.EventDateTimeStart.ToString("HH:mm")</small><br />
+                                    <em>@e.Description</em>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div style="margin-top: 8px; color: #999;">Ingen events</div>
+                        }
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,27 @@
+﻿@page
+@model Projekt2025.Pages.MemberPages.MyEventsModel
+@{
+    ViewData["Title"] = "Mine Events";
+}
+
+<h2>@Model.Member?.Name</h2>
+
+@if (Model.Events != null && Model.Events.Any())
+{
+    <h3>Dine Events</h3>
+    <ul class="list-group mt-2">
+        @foreach (var e in Model.Events)
+        {
+            <li class="list-group-item">
+                <strong>@e.Title</strong><br />
+                <small>@e.EventDateTimeStart.ToString("yyyy-MM-dd HH:mm")</small>
+            </li>
+        }
+    </ul>
+}
+else if (Model.Member != null)
+{
+    <p class="text-muted">Du har ingen events</p>
+}
+
+

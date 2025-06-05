@@ -1,0 +1,43 @@
+﻿@page
+@model Projekt2025.Pages.AdminUser.AdminDashboardModel
+@{
+    ViewBag.Title = "Admin Dashboard";
+}
+
+<h2>Velkommen til Admin Dashboard</h2>
+<p>Du er nu logget ind som Admin</p>
+
+<p>
+    <a asp-page="CreateEvent">Opret nyt event</a>
+</p>
+
+
+@if (Model.Events != null && Model.Events.Any())
+{
+    @foreach (var item in Model.Events)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <td>@item.EventId</td>
+                    <td>@item.Title</td>
+                    <td>@item.EventDateTimeStart</td>
+                    <td>@item.Description</td>
+                    <td>@item.Location</td>
+                    <td>@item.Price</td>
+                    <td>@item.Participants</td>
+                    <td>@item.EventDateTimeEnd</td>
+                    <td>
+                        <a asp-page="EditEvent" asp-route-id="@item.EventId">Edit</a> |
+                        <a asp-page="DeleteEvent" asp-route-id="@item.EventId">Delete</a>
+                    </td>
+                </tr>
+            </thead>
+        </table>
+    }
+}
+
+
+<form method="post" asp-page-handler="Logout">
+    <button type="submit" class="btn btn-primary">Logout</button>
+</form>
